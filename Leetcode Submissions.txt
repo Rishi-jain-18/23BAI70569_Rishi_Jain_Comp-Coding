@@ -1,0 +1,48 @@
+LEETCODE 878 
+
+class Solution {
+public:
+    int mod=1e9+7 ;
+    int GCD(int a,int b){
+        if(a == 0) return b ;
+        if(b == 0) return a ;
+        return GCD(b,a % b) ;
+    }
+    int nthMagicalNumber(int n, int a, int b) {
+        int lcm=(a*b)/GCD(a,b) ;
+        int totalNumbers =(lcm/a)+(lcm/b)-1 ;
+        long long low = (n/totalNumbers) * 1ll  * lcm ;
+        long long high = ((n/totalNumbers) + 1) *1ll * lcm ;
+        int ans = -1 ;
+        while(low <= high){
+            long long mid = low+(high-low)/2 ;
+            int count = mid/a + mid/b - mid/lcm ;
+            if(count >= n){
+                ans=(mid % mod);
+                high=mid-1;
+            }
+            else low=mid+1 ;
+        }
+        return ans ; 
+    }
+};
+
+
+LEETCODE 2141 
+
+class Solution {
+public:
+    long long maxRunTime(int n, vector<int>& batteries) {
+        long long sum=0;
+        for(long long b : batteries) sum+=b;
+        long long low=0,high=sum/n;
+        while(low<high){
+            long long mid=(low+high+1)/2;
+            long long curr=0;
+            for(long long b : batteries) curr+=min(b,mid);
+            if(curr>= mid*n) low=mid;
+            else high = mid-1;
+        }
+        return low;
+    }
+};
